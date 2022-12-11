@@ -51,3 +51,4 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 }
+//we need to provide the provider in the highes class that include the classes that intrested in the provider.
