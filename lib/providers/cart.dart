@@ -18,6 +18,14 @@ class Cart with ChangeNotifier {
     return {..._items};
   }
 
+  double get totlaAmount {
+    var total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
+  }
+
   int get itemCount {
     return _items == null ? 0 : _items.length;
   }
@@ -34,13 +42,12 @@ class Cart with ChangeNotifier {
               price: existingCartItem.price));
     } else {
       _items.putIfAbsent(
-        productId,
-        () => CartItem(
-            id: DateTime.now().toString(),
-            title: title,
-            price: price,
-            quantity: 1),
-      );
+          productId,
+          () => CartItem(
+              id: DateTime.now().toString(),
+              title: title,
+              price: price,
+              quantity: 1));
     }
     notifyListeners();
   }
