@@ -8,32 +8,54 @@ class EditProductScreen extends StatefulWidget {
 
 class _EditProductScreenState extends State<EditProductScreen> {
   final _priceFocusNode = FocusNode();
+  final _descriptionFocusNode = FocusNode();
+
   @override
+  void dispose() {
+    //to not make fouceMode Stick Around in memory
+    _priceFocusNode.dispose();
+    _descriptionFocusNode.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Edit Product')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
-          child: ListView(children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Title',
+          child: ListView(
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                ),
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
               ),
-              textInputAction: TextInputAction.next,
-              onFieldSubmitted: (_) {
-                FocusScope.of(context).requestFocus(_priceFocusNode);
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Price',
+              //
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Price',
+                ),
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                focusNode: _priceFocusNode,
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_descriptionFocusNode);
+                },
               ),
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              focusNode: _priceFocusNode,
-            ),
-          ]),
+              //
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+                keyboardType: TextInputType.multiline,
+                focusNode: _descriptionFocusNode,
+              ),
+            ],
+          ),
         ),
       ),
     );
